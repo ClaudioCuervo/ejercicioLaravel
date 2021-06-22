@@ -15,7 +15,8 @@ class JuegoController extends Controller
     public function index()
     {
         //
-        return view('juego.index');
+        $datos['juegos']=Juego::paginate(5);
+        return view('juego.index', $datos );
     }
 
     /**
@@ -38,7 +39,14 @@ class JuegoController extends Controller
     public function store(Request $request)
     {
         //
-        $datosJuego = request()->all();
+        //$datosJuego = request()->all();
+        $datosJuego = request()->except('_token');
+
+        if($request->hasFile('foto')) {
+            $datosJuego['foto']=$request->file('foto')->store('uploads','public');
+        }
+
+        Juego::insert($datosJuego);
         return response()->json($datosJuego);
     }
 
@@ -59,9 +67,12 @@ class JuegoController extends Controller
      * @param  \App\Models\Juego  $juego
      * @return \Illuminate\Http\Response
      */
-    public function edit(Juego $juego)
+    public function edit($id)
     {
         //
+        $juego=Juego::findOrFail($id);
+
+        return view('juego.edit', compact('juego'));
     }
 
     /**
@@ -82,8 +93,10 @@ class JuegoController extends Controller
      * @param  \App\Models\Juego  $juego
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Juego $juego)
+    public function destroy($id)
     {
         //
+        Juego::destroy($id);
+        return redirect('juego');
     }
 }

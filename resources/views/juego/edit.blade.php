@@ -1,1 +1,1 @@
-Editar juego
+@include('juego.form');
