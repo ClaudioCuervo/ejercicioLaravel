@@ -1,11 +1,18 @@
+@extends('layouts.app')
+@section('content')
+<div class="container">
 
 
-@if(Session::has('mensaje'))
-{{ Session::get('mensaje') }}
+    @if(Session::has('mensaje'))
+<div class="alert alert-success" role="alert">
+    {{ Session::get('mensaje') }}
+    @endif
+</div>
 
-@endif
 
-<a href="{{ url('juego/create') }}">Registrar nuevo juego</a>
+
+<a href="{{ url('juego/create') }}" class="btn btn-success">Registrar nuevo juego</a>
+<br><br>
 <table class="table table-light">
   
   <thead class="thead-light">
@@ -15,6 +22,7 @@
       <th>Nombre</th>
       <th>Precio</th>
       <th>Descripcion</th>
+      <th>Acciones</th>
     </tr>
   </thead>
 
@@ -23,22 +31,22 @@
     <tr>
       <td>{{$juego->id}}</td>
       <td>
-        <img src="{{ asset('storage').'/'.$juego->foto }}" alt="" width="100">
+        <img class="img-thumbnail img-fluid" src="{{ asset('storage').'/'.$juego->foto }}" alt="" width="100">
       </td>
       <td>{{$juego->games_name}}</td>
       <td>{{$juego->games_price}}</td>
       <td>{{$juego->games_des}}</td>
       <td>
       
-      <a href="{{ url( '/juego/'.$juego->id.'/edit' ) }}">
+      <a href="{{ url( '/juego/'.$juego->id.'/edit' ) }}" class="btn btn-primary" >
             Editar
       </a>
-      | 
       
-      <form action="{{ url( '/juego/'.$juego->id ) }}" method="post">
+      
+      <form action="{{ url( '/juego/'.$juego->id ) }}" class="d-inline"  method="post">
       @csrf
       {{ method_field('DELETE') }}
-      <input type="submit" onclick="return confirm('¿Quieres borrar?)" value="Borrar">
+      <input type="submit" onclick="return confirm('¿Quieres borrar?)" class="btn btn-danger" value="Borrar">
       
 
       </form>
@@ -48,3 +56,6 @@
   </tbody>
 
 </table>
+{!! $juegos->links() !!}
+</div>
+@endsection

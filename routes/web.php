@@ -25,12 +25,13 @@ Route::get('/', function () {
 Route::get('juego/create',[JuegoController::class,'create']);
 */
 
-Route::resource('juego',JuegoController::class);
+Route::resource('juego',JuegoController::class)->middleware('auth');
 
 
-Auth::routes();
+Auth::routes(['register'=>false,'reset'=>false]);
 
 Route::get('/home', [JuegoController::class, 'index'])->name('home');
+
 Route::group(['middleware'=>'auth'], function() {
     Route::get('/', [JuegoController::class, 'index'])->name('home');
 });
