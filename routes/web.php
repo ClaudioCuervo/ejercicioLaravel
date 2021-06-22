@@ -15,7 +15,7 @@ use App\Http\Controllers\JuegoController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 /* Route::get('/juego', function () {
@@ -30,4 +30,7 @@ Route::resource('juego',JuegoController::class);
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [JuegoController::class, 'index'])->name('home');
+Route::group(['middleware'=>'auth'], function() {
+    Route::get('/', [JuegoController::class, 'index'])->name('home');
+});
