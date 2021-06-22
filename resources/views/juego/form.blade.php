@@ -11,7 +11,8 @@
 <br>
 
 <label for="foto">Foto: </label>
-{{ $juego->foto }}
+
+<img src="{{ asset('storage').'/'.$juego->foto }}" alt="" width="100">
 <input type="file" name="foto" value="" id="foto">
 <br>
 

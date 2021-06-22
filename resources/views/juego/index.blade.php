@@ -14,7 +14,9 @@
     @foreach( $juegos as $juego ) 
     <tr>
       <td>{{$juego->id}}</td>
-      <td>{{$juego->foto}}</td>
+      <td>
+        <img src="{{ asset('storage').'/'.$juego->foto }}" alt="" width="100">
+      </td>
       <td>{{$juego->games_name}}</td>
       <td>{{$juego->games_price}}</td>
       <td>{{$juego->games_des}}</td>

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Juego;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Storage;
+
 class JuegoController extends Controller
 {
     /**
@@ -71,7 +73,6 @@ class JuegoController extends Controller
     {
         //
         $juego=Juego::findOrFail($id);
-
         return view('juego.edit', compact('juego'));
     }
 
@@ -82,9 +83,21 @@ class JuegoController extends Controller
      * @param  \App\Models\Juego  $juego
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Juego $juego)
+    public function update(Request $request, $id)
     {
         //
+        $datosJuego=request()->except(['_token', '_method']);
+
+        if($request->hasFile('foto')) {
+            $juego=Juego::findOrFail($id);
+            Storage::delete('public/'.$juego->foto);
+            $datosJuego['foto']=$request->file('foto')->store('uploads','public');
+        }
+
+
+        Juego::where('id','=',$id)->update($datosJuego);
+        $juego=Juego::findOrFail($id);
+        return view('juego.edit', compact('juego'));
     }
 
     /**
