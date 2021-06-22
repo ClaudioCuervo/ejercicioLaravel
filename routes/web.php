@@ -27,3 +27,7 @@ Route::get('juego/create',[JuegoController::class,'create']);
 
 Route::resource('juego',JuegoController::class);
 
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -2,6 +2,6 @@
 @csrf
 {{ method_field('PATCH') }}
 
-@include('juego.form');
+@include('juego.form',['modo'=>'Editar']);
 
 </form>

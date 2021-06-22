@@ -49,8 +49,10 @@ class JuegoController extends Controller
         }
 
         Juego::insert($datosJuego);
-        return response()->json($datosJuego);
+        //return response()->json($datosJuego);
+        return redirect('juego')->with('mensaje','Juego agregado con éxito');
     }
+    
 
     /**
      * Display the specified resource.
@@ -109,7 +111,14 @@ class JuegoController extends Controller
     public function destroy($id)
     {
         //
-        Juego::destroy($id);
-        return redirect('juego');
+        $juego=Juego::findOrFail($id);
+
+        if(Storage::delete('public/'.$juego->foto)) {
+            Juego::destroy($id);
+        }
+
+        
+        //return redirect('juego');
+        return redirect('juego')->with('mensaje','Juego borrad con éxito');
     }
 }

@@ -1,3 +1,11 @@
+
+
+@if(Session::has('mensaje'))
+{{ Session::get('mensaje') }}
+
+@endif
+
+<a href="{{ url('juego/create') }}">Registrar nuevo juego</a>
 <table class="table table-light">
   
   <thead class="thead-light">
