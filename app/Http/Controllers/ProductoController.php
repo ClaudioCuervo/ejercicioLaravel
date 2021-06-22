@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Juego;
+use App\Models\Producto;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Storage;
 
-class JuegoController extends Controller
+class ProductoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +17,8 @@ class JuegoController extends Controller
     public function index()
     {
         //
-        $datos['juegos']=Juego::paginate(1);
-        return view('juego.index', $datos );
+        $datos['productos']=Producto::paginate(1);
+        return view('producto.index', $datos );
     }
 
     /**
@@ -29,7 +29,7 @@ class JuegoController extends Controller
     public function create()
     {
         //
-        return view('juego.create');
+        return view('producto.create');
     }
 
     /**
@@ -42,9 +42,9 @@ class JuegoController extends Controller
     {
         //
         $campos=[
-            'games_name'=>'required|string|max:100',
-            'games_price'=>'required|integer',
-            'games_des'=>'required|string|max:100',
+            'product_name'=>'required|string|max:100',
+            'number_copies'=>'required|integer',
+            'product_price'=>'required|integer',
             'foto'=>'required|max:10000|mimes:jpeg,png,jpg'
         ];
         $mensaje=[
@@ -55,26 +55,25 @@ class JuegoController extends Controller
         $this->validate($request,$campos,$mensaje);
 
 
-        //$datosJuego = request()->all();
-        $datosJuego = request()->except('_token');
+        //$datosProducto = request()->all();
+        $datosProducto = request()->except('_token');
 
         if($request->hasFile('foto')) {
-            $datosJuego['foto']=$request->file('foto')->store('uploads','public');
+            $datosProducto['foto']=$request->file('foto')->store('uploads','public');
         }
 
-        Juego::insert($datosJuego);
-        //return response()->json($datosJuego);
-        return redirect('juego')->with('mensaje','Juego agregado con éxito');
+        Producto::insert($datosProducto);
+        //return response()->json($datosProducto);
+        return redirect('producto')->with('mensaje','Producto agregado con éxito');
     }
-    
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Juego  $juego
+     * @param  \App\Models\Producto  $producto
      * @return \Illuminate\Http\Response
      */
-    public function show(Juego $juego)
+    public function show(Producto $producto)
     {
         //
     }
@@ -82,29 +81,30 @@ class JuegoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Juego  $juego
+     * @param  \App\Models\Producto  $producto
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
         //
-        $juego=Juego::findOrFail($id);
-        return view('juego.edit', compact('juego'));
+        $producto=Producto::findOrFail($id);
+        return view('producto.edit', compact('producto'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Juego  $juego
+     * @param  \App\Models\Producto  $producto
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
+        //
         $campos=[
-            'games_name'=>'required|string|max:100',
-            'games_price'=>'required|integer',
-            'games_des'=>'required|string|max:100'
+            'product_name'=>'required|string|max:100',
+            'number_copies'=>'required|integer',
+            'product_price'=>'required|string|max:100'
         ];
         $mensaje=[
             'required'=>':attribute es requerido'
@@ -119,38 +119,38 @@ class JuegoController extends Controller
         $this->validate($request,$campos,$mensaje);
 
         //
-        $datosJuego=request()->except(['_token', '_method']);
+        $datosProducto=request()->except(['_token', '_method']);
 
         if($request->hasFile('foto')) {
-            $juego=Juego::findOrFail($id);
-            Storage::delete('public/'.$juego->foto);
-            $datosJuego['foto']=$request->file('foto')->store('uploads','public');
+            $producto=Producto::findOrFail($id);
+            Storage::delete('public/'.$producto->foto);
+            $datosProducto['foto']=$request->file('foto')->store('uploads','public');
         }
 
 
-        Juego::where('id','=',$id)->update($datosJuego);
-        $juego=Juego::findOrFail($id);
-        //return view('juego.edit', compact('juego'));
-        return redirect('juego')->with('mensaje','Juego modificado con éxito');
+        Producto::where('id','=',$id)->update($datosProducto);
+        $producto=Producto::findOrFail($id);
+        //return view('producto.edit', compact('producto'));
+        return redirect('producto')->with('mensaje','Producto modificado con éxito');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Juego  $juego
+     * @param  \App\Models\Producto  $producto
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         //
-        $juego=Juego::findOrFail($id);
+        $producto=Producto::findOrFail($id);
 
-        if(Storage::delete('public/'.$juego->foto)) {
-            Juego::destroy($id);
+        if(Storage::delete('public/'.$producto->foto)) {
+            Producto::destroy($id);
         }
 
         
-        //return redirect('juego');
-        return redirect('juego')->with('mensaje','Juego borrado con éxito');
+        //return redirect('producto');
+        return redirect('producto')->with('mensaje','Producto borrado con éxito');
     }
 }

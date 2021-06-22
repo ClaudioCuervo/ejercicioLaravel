@@ -37,6 +37,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('juego.index') }}">{{ __('Juegos') }}</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('producto.index') }}">{{ __('Productos') }}</a>
+                    </li>
 
                     </ul>
 
